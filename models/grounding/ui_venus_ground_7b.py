@@ -9,12 +9,14 @@ from qwen_vl_utils import process_vision_info,smart_resize
 
 class UI_Venus_Ground_7B():
     def load_model(self, model_name_or_path="/root/ckpt/huggingface/"):
+    #def load_model(self, model_name_or_path="inclusionAI/UI-Venus-Ground-7B"):
         self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
             model_name_or_path, 
             device_map="cuda", 
             trust_remote_code=True, 
             torch_dtype=torch.bfloat16,
             attn_implementation="flash_attention_2"
+            #attn_implementation="sdpa"
         ).eval()
         self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, trust_remote_code=True)
         self.processor = AutoProcessor.from_pretrained(model_name_or_path)
@@ -58,6 +60,10 @@ class UI_Venus_Ground_7B():
         ]
 
         # Preparation for inference
+
+        #Changed:get true inference model
+        inference_model = self.model.module if hasattr(self.model, 'module') else self.model
+
         text = self.processor.apply_chat_template(
             messages, tokenize=False, add_generation_prompt=True
         )
@@ -69,10 +75,11 @@ class UI_Venus_Ground_7B():
             padding=True,
             return_tensors="pt",
         )
-        inputs = inputs.to(self.model.device)
+        #inputs = inputs.to(self.model.device)
+        inputs = inputs.to(inference_model.device)
 
         # Inference: Generation of the output
-        generated_ids = self.model.generate(**inputs, max_new_tokens=128)
+        generated_ids = inference_model.generate(**inputs, max_new_tokens=128)
         generated_ids_trimmed = [
             out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
         ]
