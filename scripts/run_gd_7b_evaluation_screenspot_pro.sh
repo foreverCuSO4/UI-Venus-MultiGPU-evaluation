@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-export CUDA_VISIBLE_DEVICES=4,5,6
+export CUDA_VISIBLE_DEVICES=0,1
 
 models=("ui_venus_ground_7b") 
 for model in "${models[@]}"
 do
-    accelerate launch --num_processes=3 models/grounding/eval_screenspot_pro_multiGPU.py  \
+    accelerate launch --num_processes=2 models/grounding/eval_screenspot_pro_multiGPU.py  \
         --model_type ${model}  \
         --screenspot_imgs "Screenspot-pro/images"  \
         --screenspot_test "Screenspot-pro/annotations"  \
