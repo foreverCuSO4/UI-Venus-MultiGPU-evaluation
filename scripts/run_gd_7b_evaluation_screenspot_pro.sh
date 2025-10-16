@@ -15,6 +15,7 @@ do
         --language "en" \
         --gt_type "positive" \
         --log_path "venus_7b/venus_7b_pro.json" \
-        --inst_style "instruction"
+        --inst_style "instruction" \
+        --bbox "xyxy"
 
 done

@@ -1,0 +1,108 @@
+{
+    "details": [
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_5e09e8e9-7ef6-44be-ad54-aeaeac151897.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "minimize this window",
+            "gt_type": "positive",
+            "ui_type": "icon",
+            "task_filename": "desktop",
+            "pred": [
+                852.3530101776123,
+                13.449248615652323
+            ],
+            "raw_response": [
+                "[1678,19,1703,34]"
+            ],
+            "bbox": [
+                835,
+                0,
+                871,
+                30
+            ],
+            "correctness": "correct"
+        },
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_b072d03a-51cb-4dd6-bdeb-152d3fd44e6b.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "open the Microsoft store",
+            "gt_type": "positive",
+            "ui_type": "text",
+            "task_filename": "desktop",
+            "pred": [
+                227.3949694633484,
+                254.0131625533104
+            ],
+            "raw_response": [
+                "[350,401,552,600]"
+            ],
+            "bbox": [
+                176,
+                202,
+                275,
+                303
+            ],
+            "correctness": "correct"
+        },
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_f0122b91-3f8b-4510-9a6e-f0239d84b94e.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "minimize calculator",
+            "gt_type": "positive",
+            "ui_type": "icon",
+            "task_filename": "desktop",
+            "pred": [
+                713.6975383758545,
+                78.66541519761086
+            ],
+            "raw_response": [
+                "[1405,143,1426,167]"
+            ],
+            "bbox": [
+                697,
+                63,
+                731,
+                95
+            ],
+            "correctness": "correct"
+        },
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_d6b09201-c944-4ad9-a0a2-ff78e8f056ce.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "open the help menu",
+            "gt_type": "positive",
+            "ui_type": "text",
+            "task_filename": "desktop",
+            "pred": [
+                36.050421595573425,
+                459.558287858963
+            ],
+            "raw_response": [
+                "[50,884,93,927]"
+            ],
+            "bbox": [
+                1,
+                434,
+                68,
+                500
+            ],
+            "correctness": "correct"
+        }
+    ]
+}

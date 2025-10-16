@@ -33,6 +33,7 @@ def parse_args():
     parser.add_argument('--language', type=str, required=True, choices=LANGUAGES + ['all'], default='en', help="Language to use.")
     parser.add_argument('--gt_type', type=str, required=True, choices=GT_TYPES + ['all'], help="Ground truth type: 'positive' or 'negative'.")
     parser.add_argument('--log_path', type=str, required=True)
+    parser.add_argument('--bbox', type=str, required=True)
 
     args = parser.parse_args()
     return args
@@ -162,10 +163,12 @@ def calc_metric_for_result_list(results):
     return metrics
 
 
-def eval_sample_positive_gt(sample, response):
+def eval_sample_positive_gt(sample, response, bbox_format):
     bbox = sample["bbox"]
-    # bbox = [bbox[0], bbox[1], bbox[2], bbox[3]]  # x1, y1, x2, y2
-    bbox = [bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]]  # x1, y1, w, h
+    if bbox_format == "xyxy":
+        bbox = [bbox[0], bbox[1], bbox[2], bbox[3]]  # x1, y1, x2, y2
+    else:  # "xywh"
+        bbox = [bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]]  # x1, y1, w, h
     img_size = sample["img_size"]
     bbox = [bbox[0] / img_size[0], bbox[1] / img_size[1], bbox[2] / img_size[0], bbox[3] / img_size[1]]
     
@@ -468,7 +471,7 @@ def main():
         }
 
         if sample["gt_type"] == "positive":
-            correctness = eval_sample_positive_gt(sample, response)
+            correctness = eval_sample_positive_gt(sample, response, args.bbox)
             sample_result.update({"bbox": sample["bbox"]})
         else:
             correctness = eval_sample_negative_gt(sample, response)

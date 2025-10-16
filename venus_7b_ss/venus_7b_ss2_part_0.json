@@ -1,0 +1,160 @@
+{
+    "details": [
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_ede36f9b-1154-4f76-b7f8-c15d7d3f9b6e.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "close this window",
+            "gt_type": "positive",
+            "ui_type": "icon",
+            "task_filename": "desktop",
+            "pred": [
+                930.000057220459,
+                92.87593960762024
+            ],
+            "raw_response": [
+                "[1835,170,1854,196]"
+            ],
+            "bbox": [
+                910,
+                78,
+                954,
+                112
+            ],
+            "correctness": "correct"
+        },
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_2c6dc6ea-fd6f-4cbb-9954-2d6a68610a48.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "view solitaire daily challenges",
+            "gt_type": "positive",
+            "ui_type": "text",
+            "task_filename": "desktop",
+            "pred": [
+                1566.7081260681152,
+                566.7032951116562
+            ],
+            "raw_response": [
+                "[1480,456,1673,690]"
+            ],
+            "bbox": [
+                1477,
+                450,
+                1661,
+                680
+            ],
+            "correctness": "correct"
+        },
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_ac2d2c5e-fe5a-4233-95b4-2de18ef76a9e.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "adjust the style",
+            "gt_type": "positive",
+            "ui_type": "text",
+            "task_filename": "desktop",
+            "pred": [
+                665.2941513061523,
+                378.862801194191
+            ],
+            "raw_response": [
+                "[1280,724,1359,769]"
+            ],
+            "bbox": [
+                635,
+                360,
+                677,
+                423
+            ],
+            "correctness": "correct"
+        },
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_354a6cb2-3fe0-4cea-950c-d7f8e01fdf45.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "open the download page",
+            "gt_type": "positive",
+            "ui_type": "icon",
+            "task_filename": "desktop",
+            "pred": [
+                861.6807174682617,
+                25.122181177139282
+            ],
+            "raw_response": [
+                "[1698,34,1720,65]"
+            ],
+            "bbox": [
+                843,
+                7,
+                891,
+                46
+            ],
+            "correctness": "correct"
+        },
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_db6b6fa2-11cc-4b06-88cb-22c180f07a3b.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "save the file",
+            "gt_type": "positive",
+            "ui_type": "icon",
+            "task_filename": "desktop",
+            "pred": [
+                28.99159848690033,
+                16.240602415055037
+            ],
+            "raw_response": [
+                "[48,19,67,45]"
+            ],
+            "bbox": [
+                9,
+                0,
+                44,
+                31
+            ],
+            "correctness": "correct"
+        },
+        {
+            "img_path": "../ScreenSpot-v2-variants/images/pc_bc9ed2f6-79c1-4a35-bcb5-4760bf4ed57d.png",
+            "group": null,
+            "platform": "desktop",
+            "application": "windows",
+            "lang": "en",
+            "instruction_style": "instruction",
+            "prompt_to_evaluate": "add this page to favourites",
+            "gt_type": "positive",
+            "ui_type": "icon",
+            "task_filename": "desktop",
+            "pred": [
+                893.1933116912842,
+                22.838346250355244
+            ],
+            "raw_response": [
+                "[1748,30,1795,60]"
+            ],
+            "bbox": [
+                880,
+                6,
+                916,
+                37
+            ],
+            "correctness": "correct"
+        }
+    ]
+}
