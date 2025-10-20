@@ -33,7 +33,8 @@ def parse_args():
     parser.add_argument('--language', type=str, required=True, choices=LANGUAGES + ['all'], default='en', help="Language to use.")
     parser.add_argument('--gt_type', type=str, required=True, choices=GT_TYPES + ['all'], help="Ground truth type: 'positive' or 'negative'.")
     parser.add_argument('--log_path', type=str, required=True)
-    parser.add_argument('--bbox', type=str, required=True)
+    parser.add_argument('--bbox', type=str, required=True,default="xywh", help="bbox format in the dataset, xyxy or xywh", choices=['xyxy', 'xywh'])
+    parser.add_argument('--compression_ratio', type=float, default=1.0, help="Image compression ratio to use, default 1.0 (no compression).")
 
     args = parser.parse_args()
     return args
@@ -163,21 +164,51 @@ def calc_metric_for_result_list(results):
     return metrics
 
 
-def eval_sample_positive_gt(sample, response, bbox_format):
+def eval_sample_positive_gt(sample, response, bbox_format, compressed_img_size, compression_ratio):
     bbox = sample["bbox"]
     if bbox_format == "xyxy":
         bbox = [bbox[0], bbox[1], bbox[2], bbox[3]]  # x1, y1, x2, y2
     else:  # "xywh"
         bbox = [bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]]  # x1, y1, w, h
-    img_size = sample["img_size"]
-    bbox = [bbox[0] / img_size[0], bbox[1] / img_size[1], bbox[2] / img_size[0], bbox[3] / img_size[1]]
+    original_img_size = sample["img_size"]  # 原始图像尺寸 (W_orig, H_orig)
     
-    click_point = response["point"]  # may be none
-    print(click_point)
+    # 2. 计算缩放因子（基于面积压缩率）
+    scale = compression_ratio ** 0.5
+
+    # 3. 将原始 bbox 缩放到压缩后图像的坐标系
+    if bbox_format == "xyxy":
+        bbox_compressed = [
+            bbox[0] * scale,
+            bbox[1] * scale,
+            bbox[2] * scale,
+            bbox[3] * scale
+        ]
+    else:  # "xywh"
+        bbox_compressed = [
+            bbox[0] * scale,
+            bbox[1] * scale,
+            bbox[2] * scale,  # width
+            bbox[3] * scale   # height
+        ]
+        # 转为 xyxy 用于判断
+        x1 = bbox_compressed[0]
+        y1 = bbox_compressed[1]
+        x2 = x1 + bbox_compressed[2]
+        y2 = y1 + bbox_compressed[3]
+        bbox_compressed = [x1, y1, x2, y2]
+
+    # 4. 获取预测点（归一化坐标）
+    click_point = response["point"]  # [x_norm, y_norm] in [0,1]
     if click_point is None:
         return "wrong_format"
-    # Check if the predicted point falls in the ground truth box
-    if (bbox[0] <= click_point[0] <= bbox[2]) and (bbox[1] <= click_point[1] <= bbox[3]):
+
+    # 5. 将预测点转为压缩图的像素坐标
+    pred_x = click_point[0] * compressed_img_size[0]
+    pred_y = click_point[1] * compressed_img_size[1]
+
+    # 6. 判断是否在压缩图 bbox 内
+    x1, y1, x2, y2 = bbox_compressed
+    if x1 <= pred_x <= x2 and y1 <= pred_y <= y2:
         return "correct"
     else:
         return "wrong"
@@ -454,9 +485,10 @@ def main():
         response = model.inference(instruction=sample["prompt_to_evaluate"], image_path=img_path)
         point = response["point"]
         try:
+            print(f"[GPU {accelerator.process_index}] Processing image: {img_path}")
             tmp_img = Image.open(img_path)
             img_size = tmp_img.size
-        except FileNotFoundError:
+        except Exception as e:
             print(f"[GPU {accelerator.process_index}] Warning: Image not found at {img_path}, skipping.")
             continue
         sample["img_size"] = img_size
@@ -471,7 +503,13 @@ def main():
         }
 
         if sample["gt_type"] == "positive":
-            correctness = eval_sample_positive_gt(sample, response, args.bbox)
+            correctness = eval_sample_positive_gt(
+                sample, 
+                response, 
+                args.bbox,
+                img_size,                 # 压缩后图像尺寸
+                args.compression_ratio    # 新增参数
+            )
             sample_result.update({"bbox": sample["bbox"]})
         else:
             correctness = eval_sample_negative_gt(sample, response)
@@ -514,6 +552,7 @@ def main():
                 print(f"Warning: Could not decode JSON from partial log file: {part_file_path}")
 
         # Use the evaluate function to get the final report
+        final_report = evaluate(all_details)
         with open(log_path, 'w') as f:
             json.dump(final_report, f, indent=4)
 
